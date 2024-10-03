@@ -16,5 +16,4 @@ export default {
 </script>
 
 <style scoped>
-/* Puedes agregar aquí el estilo que desees para el componente ProductoCrud */
 </style>
