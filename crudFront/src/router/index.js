@@ -1,29 +1,34 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import LoginView from '../views/LoginView.vue';
+import ProductView from '../views/ProductView.vue';
+
+const routes = [
+  {
+    path: '/',
+    name: 'products', // Nombre de la ruta para ProductView.vue
+    component: ProductView,
+    meta: { requiresAuth: true } // Protegemos la vista con autenticación
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: LoginView
+  }
+];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    
-    {
-      path: '/',
-      name: 'products', // Nombre de la ruta para ProductView.vue
-      component: () => import('../views/ProductView.vue'),
-    },
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    }
-  ]
-})
+  routes
+});
 
-export default router
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = !!localStorage.getItem('auth'); // Verificamos si el usuario está autenticado
+
+  if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated) {
+    next({ name: 'login' });
+  } else {
+    next();
+  }
+});
+
+export default router;

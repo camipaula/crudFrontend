@@ -1,6 +1,9 @@
 <template>
   <div class="container mt-4">
-    <h2 class="mb-4 text-center">Lista de Productos</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="text-center">Lista de Productos</h2>
+      <button class="btn btn-danger" @click="logout">Cerrar Sesión</button>
+    </div>
     <table class="table table-striped table-hover">
       <thead class="thead-dark">
         <tr>
@@ -80,10 +83,10 @@ export default {
           precio: this.producto.precio
         };
         axios.post('http://localhost:5170/api/productos', nuevoProducto)
-        .then(() => {
-          this.cargarProductos();
-          this.resetFormulario();
-        });
+          .then(() => {
+            this.cargarProductos();
+            this.resetFormulario();
+          });
       }
     },
     editarProducto(producto) {
@@ -103,6 +106,21 @@ export default {
         precio: 0,
       };
     },
+    logout() {
+      // Eliminar la autenticación del localStorage
+      localStorage.removeItem('auth');
+      
+      // Redirigir al usuario a la página de login
+      this.$router.push({ name: 'login' });
+    }
   },
 };
 </script>
+
+<style scoped>
+.d-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+</style>
