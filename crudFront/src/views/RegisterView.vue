@@ -53,7 +53,7 @@ export default {
           this.$router.push({ name: 'login' });
         }
       } catch (error) {
-        this.errorMessage = error.response?.data?.message || 'Error en el registro';
+        this.errorMessage = error.response?.data?.message || 'Error en el registro, la contraseña debe tener 6 caracteres y una mayuscula';
       }
     }
   }

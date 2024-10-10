@@ -5,10 +5,10 @@ import ProductView from '../views/ProductView.vue';
 
 const routes = [
   {
-    path: '/',
-    name: 'products', // Nombre de la ruta para ProductView.vue
+    path: '/products',
+    name: 'products',
     component: ProductView,
-    meta: { requiresAuth: true } // Protegemos la vista con autenticación
+    meta: { requiresAuth: true } // Esta ruta requiere autenticación
   },
   {
     path: '/login',
@@ -19,6 +19,10 @@ const routes = [
     path: '/register',
     name: 'register',
     component: RegisterView
+  },
+  {
+    path: '/', // Ruta por defecto
+    redirect: '/login' // Redirige a login al inicio
   }
 ];
 
@@ -27,12 +31,16 @@ const router = createRouter({
   routes
 });
 
+// Guard de navegación para proteger rutas
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = !!localStorage.getItem('auth'); // Verificamos si el usuario está autenticado
+  const isAuthenticated = !!localStorage.getItem('auth'); // Verificar si el usuario está autenticado
 
+  // Si la ruta requiere autenticación y el usuario no está autenticado
   if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated) {
+    // Redirigir al login
     next({ name: 'login' });
   } else {
+    // Si está autenticado, continuar con la navegación
     next();
   }
 });

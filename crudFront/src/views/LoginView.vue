@@ -32,7 +32,7 @@ export default {
       password: ''
     };
   },
-  methods: {
+  methods: { 
     async login() {
       try {
         const response = await axios.post('http://localhost:5170/api/auth/login', {
@@ -41,12 +41,12 @@ export default {
         });
         if (response.status === 200) {
           localStorage.setItem('auth', true); // Guardar la sesión del usuario en el localStorage
-          this.$router.push({ path: '/' }); // Redirigir a la página de productos
+          this.$router.push({ path: '/products' }); // Redirigir a la página de productos
         }
       } catch (error) {
         alert('Login fallido. Por favor verifica tus credenciales.');
       }
-    }
+    } 
   }
 };
 </script>
